@@ -100,10 +100,10 @@ class App extends Component {
      }}>
   <span 
     style={{
-       border: '1px solid lightgrey',
        borderRadius: '20px', 
        padding: '10px',
-       backgroundColor: 'lightgrey'}}>
+       backgroundColor: 'rgb(140, 180, 250)',
+       color:'white'}}>
     {d.name}
     </span>
     </div>
@@ -115,7 +115,7 @@ class App extends Component {
     );
 
     return (
-      <div className="App" style={{background:'lightblue'}}>
+      <div className="App">
       <div>
         <h1>{this.state.speed}</h1>
       </div>
@@ -126,18 +126,17 @@ class App extends Component {
        </div>
   
        <div> {listItems2}</div>
+
+       <div style={{background:'lightblue'}}>
    
-      <VerticalTimeline
-      style={{
-         background:'darkgrey'
-      }}> 
-         {listItems3}
-         <VerticalTimelineElement
-              iconStyle={{ background: 'rgb(16, 204, 82)', color: '#fff' }}
-          />
-      </VerticalTimeline>
+        <VerticalTimeline> 
+          {listItems3}
+          <VerticalTimelineElement
+                iconStyle={{ background: 'rgb(16, 204, 82)', color: '#fff' }}
+            />
+        </VerticalTimeline>
 
-
+      </div>
  
       </div>
     );
