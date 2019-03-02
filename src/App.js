@@ -91,24 +91,81 @@ class App extends Component {
     date="2011 - present"
     iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
   >
-  <div style={
-     {
-     }}>
+  <div     style={{ 
+            borderTopWidth:'6px', 
+            borderTopColor:'red'}}
+  >
   <h3 className="vertical-timeline-element-title">{d.id}</h3>
-  <div style={{
-     marginTop:'30px'
-     }}>
+  <div>
   <span 
     style={{
        borderRadius: '20px', 
        padding: '10px',
        backgroundColor: 'rgb(140, 180, 250)',
+       marginLeft: '10px',
+       marginTop: '10px',
+       display:'inline-block',
+       color:'white'}}>
+    {d.name}
+    </span>
+    <span 
+    style={{
+       borderRadius: '20px', 
+       padding: '10px',
+       backgroundColor: 'rgb(140, 180, 250)',
+       marginLeft: '10px',
+       marginTop: '10px',
+       display:'inline-block',
+       color:'white'}}>
+    {d.name}
+    </span>
+    <span 
+    style={{
+       borderRadius: '20px', 
+       padding: '10px',
+       backgroundColor: 'rgb(140, 180, 250)',
+       marginLeft: '10px',
+       marginTop: '10px',
+       display:'inline-block',
+       color:'white'}}>
+    {d.name}
+    </span>
+    <span 
+    style={{
+       borderRadius: '20px', 
+       padding: '10px',
+       backgroundColor: 'rgb(140, 180, 250)',
+       marginLeft: '10px',
+       marginTop: '10px',
+       display:'inline-block',
+       color:'white'}}>
+    {d.name}
+    </span>
+    <span 
+    style={{
+       borderRadius: '20px', 
+       padding: '10px',
+       backgroundColor: 'rgb(140, 180, 250)',
+       marginLeft: '10px',
+       marginTop: '10px',
+       display:'inline-block',
+       color:'white'}}>
+    {d.name}
+    </span>
+    <span 
+    style={{
+       borderRadius: '20px', 
+       padding: '10px',
+       backgroundColor: 'rgb(140, 180, 250)',
+       marginLeft: '10px',
+       marginTop: '10px',
+       display:'inline-block',
        color:'white'}}>
     {d.name}
     </span>
     </div>
     <p>
-      Creative Direction, User Experience, Visual Design, Project Management, Team Leading
+      <span>Creative Direction </span>, User Experience, Visual Design, <span>Project Management, Team Leading</span>
     </p>
     </div>
   </VerticalTimelineElement>
