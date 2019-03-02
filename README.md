@@ -79,7 +79,7 @@ firebase init
 
 Set public folder as ./build
 
-Do NOT configure as single page app.
+Configure as single page app.
 
 npm run build
 
