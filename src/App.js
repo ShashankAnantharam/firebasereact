@@ -103,7 +103,7 @@ class App extends Component {
 
        <div style={{background:'lightblue'}}>
 
-       <Router>
+       <Router basename={process.env.PUBLIC_URL}>
 
        
  
