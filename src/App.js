@@ -7,6 +7,7 @@ import {ArrayObj} from './arrayObj';
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import TimelineComponent from './TimelineComponent';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class App extends Component {
 
@@ -102,7 +103,21 @@ class App extends Component {
 
        <div style={{background:'lightblue'}}>
 
-       <TimelineComponent list={this.state.arry}/>
+       <Router>
+
+       
+ 
+          <Route path="/timeline" 
+          render={() => <TimelineComponent list={this.state.arry} />}
+          />
+          
+       </Router>
+
+       <Router>
+       <Route path="/usr/:id"  
+                   component={Topics}
+         />
+       </Router>
 
       </div>
  
@@ -111,6 +126,14 @@ class App extends Component {
   }
 
   
+}
+
+function Topics({ match }) {
+  return (
+    <div>
+      <h2>{match.params.id}</h2>
+    </div>
+      )
 }
 
 export default App;
