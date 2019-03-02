@@ -6,6 +6,7 @@ import 'firebase/firestore';
 import {ArrayObj} from './arrayObj';
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
+import {TimelineComponent} from './TimelineComponent';
 
 class App extends Component {
 
@@ -67,8 +68,33 @@ class App extends Component {
 
      
   }
+
+  TimelineEntity(d){
+   return(
+   <span 
+         style={{
+            borderRadius: '20px', 
+            padding: '10px',
+            backgroundColor: 'rgb(140, 180, 250)',
+            marginLeft: '10px',
+            marginTop: '10px',
+            display:'inline-block',
+            color:'white'}}>
+         {d.name}
+   </span>
+   );  
+  }_
+
   
   TimelineFn(d){
+     var listTemp = [];
+     for(var i=0;i<7;i++){
+        listTemp.push(d);
+     }
+     const listItems = listTemp.map((listItem) => 
+      this.TimelineEntity(listItem)
+    );
+
     return (
       <VerticalTimelineElement
       className="vertical-timeline-element--work"
@@ -81,72 +107,7 @@ class App extends Component {
     >
     <h3 className="vertical-timeline-element-title">{d.id}</h3>
     <div>
-    <span 
-      style={{
-         borderRadius: '20px', 
-         padding: '10px',
-         backgroundColor: 'rgb(140, 180, 250)',
-         marginLeft: '10px',
-         marginTop: '10px',
-         display:'inline-block',
-         color:'white'}}>
-      {d.name}
-      </span>
-      <span 
-      style={{
-         borderRadius: '20px', 
-         padding: '10px',
-         backgroundColor: 'rgb(140, 180, 250)',
-         marginLeft: '10px',
-         marginTop: '10px',
-         display:'inline-block',
-         color:'white'}}>
-      {d.name}
-      </span>
-      <span 
-      style={{
-         borderRadius: '20px', 
-         padding: '10px',
-         backgroundColor: 'rgb(140, 180, 250)',
-         marginLeft: '10px',
-         marginTop: '10px',
-         display:'inline-block',
-         color:'white'}}>
-      {d.name}
-      </span>
-      <span 
-      style={{
-         borderRadius: '20px', 
-         padding: '10px',
-         backgroundColor: 'rgb(140, 180, 250)',
-         marginLeft: '10px',
-         marginTop: '10px',
-         display:'inline-block',
-         color:'white'}}>
-      {d.name}
-      </span>
-      <span 
-      style={{
-         borderRadius: '20px', 
-         padding: '10px',
-         backgroundColor: 'rgb(140, 180, 250)',
-         marginLeft: '10px',
-         marginTop: '10px',
-         display:'inline-block',
-         color:'white'}}>
-      {d.name}
-      </span>
-      <span 
-      style={{
-         borderRadius: '20px', 
-         padding: '10px',
-         backgroundColor: 'rgb(140, 180, 250)',
-         marginLeft: '10px',
-         marginTop: '10px',
-         display:'inline-block',
-         color:'white'}}>
-      {d.name}
-      </span>
+    {listItems}
       </div>
       <p>
         <span>Creative Direction </span>, User Experience, Visual Design, <span>Project Management, Team Leading</span>
@@ -193,7 +154,7 @@ class App extends Component {
 
        <div style={{background:'lightblue'}}>
    
-        <VerticalTimeline> 
+       <VerticalTimeline> 
           {listItems3}
           <VerticalTimelineElement
                 iconStyle={{ background: 'rgb(16, 204, 82)', color: '#fff' }}
