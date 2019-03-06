@@ -8,6 +8,9 @@ import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timel
 import 'react-vertical-timeline-component/style.min.css';
 import TimelineComponent from './TimelineComponent';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {SideNav, MenuIcon} from 'react-simple-sidenav';
+import Sidebar from "react-sidebar";
+
 
 class App extends Component {
 
@@ -18,9 +21,17 @@ class App extends Component {
        docs: [],
        displaydocs: [],
        name: "",
-       arry: []
-   };
+       arry: [],
+       showNav: false,
+       currentClicked:'0',
+       sidebarOpen: false
+    };
+    this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
+
+  onSetSidebarOpen(open) {
+   this.setState({ sidebarOpen: open });
+ }
 
   AppendToMainArray(){
      this.setState({
@@ -90,17 +101,33 @@ class App extends Component {
 
     return (
       <div className="App">
-      <div>
-        <h1>{this.state.speed}</h1>
-      </div>
- 
-       <div> {this.state.name} </div>
-       <div>
-       {listItems}
-       </div>
-  
-       <div> {listItems2}</div>
+      <MenuIcon style={{background:'black'}} onClick={() => this.setState({showNav: !this.state.showNav})}/>
 
+   <div>    
+   
+   <SideNav
+    showNav        =  {this.state.showNav}
+    onHideNav      =  {() => this.setState({showNav: false})}
+    title          =  "Hello World"
+    items          =  {['home', 'services', 'about', 'contact']}
+    titleStyle     =  {{backgroundColor: '#4CAF50'}}
+    itemStyle      =  {{backgroundColor: '#fff'}}
+    itemHoverStyle =  {{backgroundColor: '#CDDC39'}}
+    currentClicked = {'home'}
+    />
+
+      <Sidebar
+        sidebar={<div style={{width:'30vw'}}>Sidebar content</div>}
+        open={this.state.sidebarOpen}
+        onSetOpen={this.onSetSidebarOpen}
+        pullRight={true}
+        defaultSidebarWidth='200px'
+        styles={{ sidebar: { background: "white" } }}
+      >
+        <button onClick={() => this.onSetSidebarOpen(true)}>
+          Open sidebar
+        </button>
+      </Sidebar>
        <div style={{background:'lightblue'}}>
 
        <Router basename={process.env.PUBLIC_URL}>
@@ -120,7 +147,7 @@ class App extends Component {
        </Router>
 
       </div>
- 
+      </div>
       </div>
     );
   }
@@ -137,3 +164,5 @@ function Topics({ match }) {
 }
 
 export default App;
+
+
