@@ -10,7 +10,9 @@ import TimelineComponent from './TimelineComponent';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {SideNav, MenuIcon} from 'react-simple-sidenav';
 import Sidebar from "react-sidebar";
-
+import { Slider } from 'react-burgers';
+import { slide as Menu } from 'react-burger-menu';
+import NewGraphComponent from './GraphComp';
 
 class App extends Component {
 
@@ -104,30 +106,29 @@ class App extends Component {
       <MenuIcon style={{background:'black'}} onClick={() => this.setState({showNav: !this.state.showNav})}/>
 
    <div>    
-   
-   <SideNav
-    showNav        =  {this.state.showNav}
-    onHideNav      =  {() => this.setState({showNav: false})}
-    title          =  "Hello World"
-    items          =  {['home', 'services', 'about', 'contact']}
-    titleStyle     =  {{backgroundColor: '#4CAF50'}}
-    itemStyle      =  {{backgroundColor: '#fff'}}
-    itemHoverStyle =  {{backgroundColor: '#CDDC39'}}
-    currentClicked = {'home'}
-    />
 
+
+   <Slider />
+   
+
+      <div>
       <Sidebar
-        sidebar={<div style={{width:'30vw'}}>Sidebar content</div>}
+        sidebar={<div style={{width:'30vw'}}>{this.state.sidebarOpen.toString()}</div>}
         open={this.state.sidebarOpen}
         onSetOpen={this.onSetSidebarOpen}
         pullRight={true}
         defaultSidebarWidth='200px'
-        styles={{ sidebar: { background: "white" } }}
+        styles={{ sidebar: { background: "white", position:'fixed' } }}
       >
         <button onClick={() => this.onSetSidebarOpen(true)}>
           Open sidebar
         </button>
+
       </Sidebar>
+      </div>
+      <div>
+      {this.state.sidebarOpen.toString()}
+      </div>
        <div style={{background:'lightblue'}}>
 
        <Router basename={process.env.PUBLIC_URL}>
@@ -136,6 +137,14 @@ class App extends Component {
  
           <Route path="/timeline" 
           render={() => <TimelineComponent list={this.state.arry} />}
+          />
+          
+       </Router>
+
+       <Router>
+ 
+          <Route path="/graph" 
+          render={() => <NewGraphComponent />}
           />
           
        </Router>
