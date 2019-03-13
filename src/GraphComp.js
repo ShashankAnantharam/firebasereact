@@ -43,9 +43,14 @@ class NewGraphComponent extends React.Component {
 
         var options = {
             layout: {
-                hierarchical: true
+                hierarchical: false
             },
             edges: {
+                arrows: {
+                    to:     {enabled: false, scaleFactor:1, type:'arrow'},
+                    middle: {enabled: false, scaleFactor:1, type:'arrow'},
+                    from:   {enabled: false, scaleFactor:1, type:'arrow'}
+                  },
                 color: "#000000"
             }        
         };
