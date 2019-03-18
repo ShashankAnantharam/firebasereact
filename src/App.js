@@ -8,7 +8,7 @@ import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timel
 import 'react-vertical-timeline-component/style.min.css';
 import TimelineComponent from './TimelineComponent';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import {SideNav, MenuIcon} from 'react-simple-sidenav';
+import {SideNav} from 'react-simple-sidenav';
 import Sidebar from "react-sidebar";
 import { Slider } from 'react-burgers';
 import { slide as Menu } from 'react-burger-menu';
@@ -18,7 +18,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
-
+import TimelineIcon from '@material-ui/icons/Timeline';
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import MenuIcon from '@material-ui/icons/Menu';
+import AcUnitIcon from '@material-ui/icons/AcUnit'; 
+import GroupIcon from '@material-ui/icons/Group'; 
+import ListIcon from '@material-ui/icons/List';
 
 
 
@@ -126,16 +131,34 @@ class App extends Component {
         <List className="">
       <ListItem button selected={true}>
       <Avatar>
-          <ImageIcon />
+          <MenuIcon />
         </Avatar>
-        <ListItemText primary="Photos"/>
+        <ListItemText primary="All"/>
       </ListItem>
       <ListItem button>
-        <ListItemText primary="Work" secondary="Jan 7, 2014" />
+      <Avatar>
+          <ListIcon />
+        </Avatar>
+        <ListItemText primary="List" />
       </ListItem>
       <ListItem button>
-
-        <ListItemText primary="Vacation" secondary="July 20, 2014" />
+      <Avatar>
+          <AcUnitIcon />
+        </Avatar>
+        <ListItemText primary="Graph" />
+      </ListItem>
+      <ListItem button>      
+      <Avatar>
+          <GroupIcon />
+        </Avatar>
+        <ListItemText primary="Find Connections" />
+      </ListItem>
+      <ListItem button>
+      
+      <Avatar>
+          <TimelineIcon />
+        </Avatar>
+        <ListItemText primary="Timeline" />
       </ListItem>
     </List>
         </div>}
