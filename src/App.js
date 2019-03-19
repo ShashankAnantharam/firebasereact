@@ -39,7 +39,7 @@ class App extends Component {
        arry: [],
        showNav: false,
        currentClicked:'0',
-       sidebarOpen: false
+       sidebarOpen: false,
     };
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }

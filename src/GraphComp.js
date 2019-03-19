@@ -9,6 +9,9 @@ import 'react-vertical-timeline-component/style.min.css';
 import { timingSafeEqual } from 'crypto';  
 import Graph from "react-graph-vis";
 
+import  MultiSelectReact  from 'multi-select-react';
+
+
 class NewGraphComponent extends React.Component {
 
 
@@ -17,14 +20,63 @@ class NewGraphComponent extends React.Component {
         super(props);
           this.state={
               graph: {},
-              options: {}
+              options: {},
+              multiSelect: [
+                {
+                  value: false, 
+                  label: "aaa", 
+                  id: 1
+                },
+              {
+                  value: false, 
+                  label: "bbb", 
+                  id: 2
+                },
+                {
+                    value: false, 
+                    label: "ccc", 
+                    id: 3
+                  },
+                  {
+                    value: false, 
+                    label: "bbb", 
+                    id: 4
+                  },
+                  {
+                      value: false, 
+                      label: "ccc", 
+                      id: 5
+                    }
+                    
+                  
+
+            ]
           }
+
+          //this.optionClicked = this.optionClicked.bind(this);
+          //this.selectedBadgeClicked = this.selectedBadgeClicked.bind(this);
           
       }
 
-
+      optionClicked(optionsList) {
+        this.setState({ multiSelect: optionsList });
+        }
+    
+        selectedBadgeClicked(optionsList) {
+            this.setState({ multiSelect: optionsList });
+        }
 
     render(){
+
+        const selectedOptionsStyles = {
+            color: "#3c763d",
+            backgroundColor: "#dff0d8"
+        };
+        const optionsListStyles = {
+            backgroundColor: "#dff0d8",
+            color: "#3c763d"
+        };
+
         var graph = {
             nodes: [
                 {id: 1, label: 'Node 1'},
@@ -67,7 +119,17 @@ class NewGraphComponent extends React.Component {
         
         return (
             <div>
-                <div> RRR</div>
+                <div style={{width:'20%'}}>
+                <MultiSelectReact 
+                options={this.state.multiSelect}
+                optionClicked={this.optionClicked.bind(this)}
+                selectedBadgeClicked={this.selectedBadgeClicked.bind(this)}
+                selectedOptionsStyles={selectedOptionsStyles}
+                optionsListStyles={optionsListStyles} 
+                isTextWrap={false} 
+                />
+                </div>
+
                 <Graph graph={graph} options={options} events={events} style={{ height: "780px" }} />
             </div>
         );
