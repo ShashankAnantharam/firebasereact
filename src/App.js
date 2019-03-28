@@ -126,54 +126,7 @@ class App extends Component {
    
 
       <div>
-      <Sidebar
-        sidebar={<div style={{width:'30vw'}}>
-        {this.state.sidebarOpen.toString()}
-        <List className="">
-      <ListItem button selected={true}>
-      <Avatar>
-          <MenuIcon />
-        </Avatar>
-        <ListItemText primary="All"/>
-      </ListItem>
-      <ListItem button>
-      <Avatar>
-          <ListIcon />
-        </Avatar>
-        <ListItemText primary="List" />
-      </ListItem>
-      <ListItem button>
-      <Avatar>
-          <AcUnitIcon />
-        </Avatar>
-        <ListItemText primary="Graph" />
-      </ListItem>
-      <ListItem button>      
-      <Avatar>
-          <GroupIcon />
-        </Avatar>
-        <ListItemText primary="Find Connections" />
-      </ListItem>
-      <ListItem button>
       
-      <Avatar>
-          <TimelineIcon />
-        </Avatar>
-        <ListItemText primary="Timeline" />
-      </ListItem>
-    </List>
-        </div>}
-        open={this.state.sidebarOpen}
-        onSetOpen={this.onSetSidebarOpen}
-        pullRight={true}
-        defaultSidebarWidth='200px'
-        styles={{ sidebar: { background: "white", position:'fixed' } }}
-      >
-        <button onClick={() => this.onSetSidebarOpen(true)}>
-          Open sidebar
-        </button>
-
-      </Sidebar>
       </div>
       <div>
       {this.state.sidebarOpen.toString()}
