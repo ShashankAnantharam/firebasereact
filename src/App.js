@@ -24,6 +24,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AcUnitIcon from '@material-ui/icons/AcUnit'; 
 import GroupIcon from '@material-ui/icons/Group'; 
 import ListIcon from '@material-ui/icons/List';
+import EditBlock from './EditBlock';
 
 
 
@@ -177,7 +178,7 @@ class App extends Component {
       <div>
       {this.state.sidebarOpen.toString()}
       </div>
-       <div style={{background:'lightblue'}}>
+       <div style={{background:'white'}}>
 
        <Router basename={process.env.PUBLIC_URL}>
 
@@ -193,6 +194,14 @@ class App extends Component {
  
           <Route path="/graph" 
           render={() => <NewGraphComponent />}
+          />
+          
+       </Router>
+
+       <Router>
+ 
+          <Route path="/editBlock" 
+          render={() => <EditBlock />}
           />
           
        </Router>
