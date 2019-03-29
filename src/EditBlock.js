@@ -21,26 +21,35 @@ class EditBlock extends React.Component {
 
         //this.EditSingleBlock = this.EditSingleBlock.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.textAreaAdjust = this.textAreaAdjust.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
     }
 
     handleChange(event,index) {
-        var list = this.state.blockList;
-        list[index].id = event.target.value;
-        this.setState({blockList: list});
+        var shouldUpdate = true;
+        var lastChar = event.target.value[event.target.value.length-1];
+        if(lastChar=='\n' || lastChar=='\t'){
+            shouldUpdate=false;
+            console.log("Here");
+        }
+
+        if(shouldUpdate){
+            var list = this.state.blockList;
+            list[index].id = event.target.value;
+            this.setState({blockList: list});
+        }
       }
 
-      textAreaAdjust(o) {
-        o.style.height = "1px";
-        o.style.height = (25+o.scrollHeight)+"px";
+      handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+          console.log('do validate');
+        }
       }
 
       sendMessage(e) {
         if (e.key === 'Enter') {
           //this.props.onKeyUp(e.target.value) your work with value
           // I want to clear the textarea around here
-          e.target.value = '';
+         // e.target.value = '';
         }
       }
 
@@ -52,10 +61,10 @@ class EditBlock extends React.Component {
                 <label>
                     <Textarea 
                     type="text"
-                    defaultValue={listItem.id}
+                    value={this.state.blockList[index].id}
+                    onKeyPress={this.handleKeyPress}
                     onChange={this.handleChange}
                     onChange={(e) => { this.handleChange(e,index)}}
-                    onkeyup={this.textAreaAdjust}
                     maxRows="20"
                     minRows="10"
                     onKeyUp = {this.sendMessage}
