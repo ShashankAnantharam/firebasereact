@@ -1,47 +1,52 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
+import { ENOSPC } from 'constants';
 
 
-class EditBlock extends React.Component {
+class LongPara extends React.Component {
 
     constructor(props){
 
         super(props);
         this.state ={
-            blockList:[
-                {
-                    "id":"sdfsdfs"
-                },
-                {
-                    "id":"sddd"
-                }
-            ],
+            display:'',
             value:'fdfdgd'
         }
 
         //this.EditSingleBlock = this.EditSingleBlock.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
+        this.getParas = this.getParas.bind(this);
     }
 
-    handleChange(event,index) {
-        var shouldUpdate = true;
-        var lastChar = event.target.value[event.target.value.length-1];
-        if(lastChar=='\n' || lastChar=='\t'){
-            shouldUpdate=false;
-            console.log("Here");
-        }
 
-        if(shouldUpdate){
-            var list = this.state.blockList;
-            list[index].id = event.target.value;
-            this.setState({blockList: list});
+    getParas(text){
+        var ans="";
+        var prev='0';
+        for(var i=0;i<text.length;i++){
+            if(text[i]=='\n'){
+                if(prev!='\n'){
+                    ans=ans+';';
+                }
+            }
+            else{
+                ans=ans+text[i];
+            }
+            prev = text[i];
         }
+        return ans;
+    }
+
+    handleChange(event) {
+        this.setState({
+            value: event.target.value,
+        });
+    
       }
 
       handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-          console.log('do validate');
+          
         }
       }
 
@@ -50,21 +55,29 @@ class EditBlock extends React.Component {
           //this.props.onKeyUp(e.target.value) your work with value
           // I want to clear the textarea around here
          // e.target.value = '';
+         var currVal = this.state.value;
+         currVal = this.getParas(currVal);
+         this.setState({
+             display:currVal
+         });
         }
       }
 
-    EditSingleBlock(listItem, index){
-        return(
 
+
+    render(){
+
+
+        return (
             <div>
                 <form>
                 <label>
                     <Textarea 
                     type="text"
-                    value={this.state.blockList[index].id}
+                    value={this.state.value}
                     onKeyPress={this.handleKeyPress}
-                    onChange={(e) => { this.handleChange(e,index)}}
-                    maxRows="20"
+                    onChange={(e) => { this.handleChange(e)}}
+                    maxRows="60"
                     minRows="10"
                     onKeyUp = {this.sendMessage}
                     style={{
@@ -80,31 +93,10 @@ class EditBlock extends React.Component {
                         }}/>
                 </label>
                 </form>
-            </div>
-
-        );
-    }
-
-
-
-    render(){
-
-        const listItems = this.state.blockList.map((block, index) => 
-         this.EditSingleBlock(block, index)
-       );
-
-        return (
-            <div>
-                {listItems}
-                <div>
-                    {this.state.blockList[0].id}
-                </div>
-                <div>
-                    {this.state.blockList[1].id}
-                </div>
+                <div>{this.state.display}</div>
             </div>
         );
     }
 
 }
-export default EditBlock;
+export default LongPara;

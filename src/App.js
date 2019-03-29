@@ -25,7 +25,7 @@ import AcUnitIcon from '@material-ui/icons/AcUnit';
 import GroupIcon from '@material-ui/icons/Group'; 
 import ListIcon from '@material-ui/icons/List';
 import EditBlock from './EditBlock';
-
+import LongPara from './LongPara';
 
 
 class App extends Component {
@@ -158,6 +158,14 @@ class App extends Component {
           />
           
        </Router>
+
+       <Router>
+ 
+        <Route path="/longPara" 
+        render={() => <LongPara />}
+        />
+        
+        </Router>
 
        <Router>
        <Route path="/usr/:id"  
