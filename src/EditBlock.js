@@ -11,6 +11,9 @@ class EditBlock extends React.Component {
             blockList:[
                 {
                     "id":"sdfsdfs"
+                },
+                {
+                    "id":"sddd"
                 }
             ],
             value:'fdfdgd'
@@ -22,8 +25,10 @@ class EditBlock extends React.Component {
         this.sendMessage = this.sendMessage.bind(this);
     }
 
-    handleChange(event) {
-        this.setState({value: event.target.value});
+    handleChange(event,index) {
+        var list = this.state.blockList;
+        list[index].id = event.target.value;
+        this.setState({blockList: list});
       }
 
       textAreaAdjust(o) {
@@ -39,7 +44,7 @@ class EditBlock extends React.Component {
         }
       }
 
-    EditSingleBlock(listItem){
+    EditSingleBlock(listItem, index){
         return(
 
             <div>
@@ -47,8 +52,9 @@ class EditBlock extends React.Component {
                 <label>
                     <Textarea 
                     type="text"
-                    defaultValue={this.state.value}
+                    defaultValue={listItem.id}
                     onChange={this.handleChange}
+                    onChange={(e) => { this.handleChange(e,index)}}
                     onkeyup={this.textAreaAdjust}
                     maxRows="20"
                     minRows="10"
@@ -75,13 +81,19 @@ class EditBlock extends React.Component {
 
     render(){
 
-        const listItems = this.state.blockList.map((block) => 
-         this.EditSingleBlock(block)
+        const listItems = this.state.blockList.map((block, index) => 
+         this.EditSingleBlock(block, index)
        );
 
         return (
             <div>
                 {listItems}
+                <div>
+                    {this.state.blockList[0].id}
+                </div>
+                <div>
+                    {this.state.blockList[1].id}
+                </div>
             </div>
         );
     }
