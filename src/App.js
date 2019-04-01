@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import * as firebase from 'firebase';
+import StyleFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import 'firebase/firestore';
 import {ArrayObj} from './arrayObj';
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
@@ -41,8 +42,20 @@ class App extends Component {
        showNav: false,
        currentClicked:'0',
        sidebarOpen: false,
+       isSignedIn:false
     };
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+  }
+
+  uiConfig = {
+    signInFlow: "popup",
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.PhoneAuthProvider.PROVIDER_ID
+    ],
+    callbacks:{
+      signInSuccess: () => false      
+    }
   }
 
   onSetSidebarOpen(open) {
@@ -93,6 +106,12 @@ class App extends Component {
       this.populateArray(snapshot)
    ));   
 
+   firebase.auth().onAuthStateChanged(user =>{
+     this.setState({
+       isSignedIn: !!user
+     });
+   })
+
      
   }
 
@@ -119,18 +138,28 @@ class App extends Component {
       <div className="App">
       <MenuIcon style={{background:'black'}} onClick={() => this.setState({showNav: !this.state.showNav})}/>
 
+      {this.state.isSignedIn?
+        <div>
+          Signed In
+          <button onClick={() => firebase.auth().signOut()}>
+            Log Out
+          </button>
+        </div>
+        :
+        <div>
+          <StyleFirebaseAuth
+            uiConfig={this.uiConfig}
+            firebaseAuth={firebase.auth()}
+          />
+
+        </div>
+    
+      }
    <div>    
 
 
    <Slider />
    
-
-      <div>
-      
-      </div>
-      <div>
-      {this.state.sidebarOpen.toString()}
-      </div>
        <div style={{background:'white'}}>
 
        <Router basename={process.env.PUBLIC_URL}>
