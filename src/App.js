@@ -8,7 +8,7 @@ import {ArrayObj} from './arrayObj';
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import TimelineComponent from './TimelineComponent';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router,Switch, Route, Link } from "react-router-dom";
 import {SideNav} from 'react-simple-sidenav';
 import Sidebar from "react-sidebar";
 import { Slider } from 'react-burgers';
@@ -42,7 +42,7 @@ class App extends Component {
        showNav: false,
        currentClicked:'0',
        sidebarOpen: false,
-       isSignedIn:false
+       isSignedIn:false,firebasePId: ''
     };
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
@@ -54,7 +54,15 @@ class App extends Component {
       firebase.auth.PhoneAuthProvider.PROVIDER_ID
     ],
     callbacks:{
-      signInSuccess: () => false      
+      signInSuccess: () => false,
+      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+        var providerId = authResult.additionalUserInfo.providerId;
+        this.setState({
+          firebasePId:providerId
+        });
+        console.log(providerId);
+        //...
+      }      
     }
   }
 
@@ -110,6 +118,8 @@ class App extends Component {
      this.setState({
        isSignedIn: !!user
      });
+     console.log(firebase.auth().currentUser);
+     console.log(firebase.auth().currentUser.getIdToken());
    })
 
      
@@ -144,6 +154,8 @@ class App extends Component {
           <button onClick={() => firebase.auth().signOut()}>
             Log Out
           </button>
+          <h1>{firebase.auth().currentUser.phoneNumber}</h1>
+          <span>{firebase.auth().currentUser.providerData[0].providerId}</span>
         </div>
         :
         <div>
@@ -163,8 +175,6 @@ class App extends Component {
        <div style={{background:'white'}}>
 
        <Router basename={process.env.PUBLIC_URL}>
-
-       
  
           <Route path="/timeline" 
           render={() => <TimelineComponent list={this.state.arry} />}
@@ -181,10 +191,15 @@ class App extends Component {
        </Router>
 
        <Router>
- 
+        <Switch>
+          
           <Route path="/editBlock" 
           render={() => <EditBlock />}
           />
+        <Route path="/" 
+          render={() => <div>Jingalala</div>}
+          />
+      </Switch>
           
        </Router>
 

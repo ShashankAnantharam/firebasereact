@@ -1,5 +1,43 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
+import {Launcher} from 'react-chat-window';
+import { ChatFeed, ChatBubble, BubbleGroup, Message } from 'react-chat-ui';
+
+const styles = {
+  button: {
+    backgroundColor: '#fff',
+    borderColor: '#1D2129',
+    borderStyle: 'solid',
+    borderRadius: 20,
+    borderWidth: 2,
+    color: '#1D2129',
+    fontSize: 18,
+    fontWeight: '300',
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  selected: {
+    color: '#fff',
+    backgroundColor: '#0084FF',
+    borderColor: '#0084FF',
+  },
+};
+
+const users = {
+  0: 'You',
+  Mark: 'Mark',
+  2: 'Evan',
+};
+
+const customBubble = props => (
+  <div>
+    <p>{`${props.message.senderName} ${props.message.id ? 'says' : 'said'}: ${
+      props.message.message
+    }`}</p>
+  </div>
+);
 
 
 class EditBlock extends React.Component {
@@ -16,13 +54,50 @@ class EditBlock extends React.Component {
                     "id":"sddd"
                 }
             ],
-            value:'fdfdgd'
+            value:'fdfdgd',
+            messageList: [],
+            messages: [
+              new Message({
+                id: 1,
+                message: "I'm the recipient! (The person you're talking to)",
+              }), // Gray bubble
+              new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+            ],
+            useCustomBubble: false,
+            curr_user: 0        
         }
 
         //this.EditSingleBlock = this.EditSingleBlock.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
     }
+
+    onPress(user) {
+      this.setState({ curr_user: user });
+    }
+  
+    onMessageSubmit(e) {
+      const input = this.message;
+      e.preventDefault();
+      if (!input.value) {
+        return false;
+      }
+      this.pushMessage(this.state.curr_user, input.value);
+      input.value = '';
+      return true;
+    }
+  
+    pushMessage(recipient, message) {
+      const prevState = this.state;
+      const newMessage = new Message({
+        id: recipient,
+        message,
+        senderName: users[recipient],
+      });
+      prevState.messages.push(newMessage);
+      this.setState(this.state);
+    }
+
 
     handleChange(event,index) {
         var shouldUpdate = true;
@@ -85,6 +160,23 @@ class EditBlock extends React.Component {
         );
     }
 
+    _onMessageWasSent(message) {
+        this.setState({
+          messageList: [...this.state.messageList, message]
+        })
+      }
+     
+      _sendMessage(text) {
+        if (text.length > 0) {
+          this.setState({
+            messageList: [...this.state.messageList, {
+              author: 'them',
+              type: 'text',
+              data: { text }
+            }]
+          })
+        }
+      }
 
 
     render(){
@@ -101,6 +193,25 @@ class EditBlock extends React.Component {
                 </div>
                 <div>
                     {this.state.blockList[1].id}
+                </div>
+                <div style={{width:'27%',height:'30%'}}>
+                <ChatFeed
+                  chatBubble={this.state.useCustomBubble && customBubble}
+                  maxHeight={250}
+                  messages={this.state.messages} // Boolean: list of message objects
+                  showSenderName
+                />
+
+          <form onSubmit={e => this.onMessageSubmit(e)}>
+            <input
+              ref={m => {
+                this.message = m;
+              }}
+              placeholder="Type a message..."
+              className="message-input"
+              style={{width:'100%'}}
+            />
+          </form>
                 </div>
             </div>
         );
