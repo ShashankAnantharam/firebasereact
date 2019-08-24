@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 import { ENOSPC } from 'constants';
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
+import * as am4plugins_forceDirected from "@amcharts/amcharts4/plugins/forceDirected"; 
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
+am4core.useTheme(am4themes_animated);
 
 class LongPara extends React.Component {
 
@@ -17,6 +22,8 @@ class LongPara extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.getParas = this.getParas.bind(this);
+        this.chartCode = this.chartCode.bind(this);
+        this.chart = null;
     }
 
 
@@ -63,6 +70,98 @@ class LongPara extends React.Component {
         }
       }
 
+      chartCode(){
+          console.log('here');
+            // Create chart
+            var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
+
+            // Create series
+            var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries());
+
+            // Set data
+            series.data = [{
+                "name":"Sandwraith",
+                "image": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Nigel_Farage_%2845718080574%29_%28cropped%29.jpg",
+            "children": [{
+                "name": "Chrome",
+                "value": 1,
+                "image": "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_chrome.svg"
+            }, {
+                "name": "Firefox",
+                "value": 1,
+                "image": "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_firefox.svg"
+            }, {
+                "name": "Internet Explorer",
+                "value": 1,
+                "image": "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_ie.svg"
+            }, {
+                "name": "Safari",
+                "value": 1,
+                "image": "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_safari.svg"
+            }, {
+                "name": "Opera",
+                "value": 1,
+                "image": "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_opera.svg"
+            }]
+            }];
+
+            // Set up data fields
+            series.dataFields.value = "value";
+            series.dataFields.name = "name";
+            series.dataFields.id = "id";
+            series.dataFields.children = "children";
+            series.dataFields.linkWith = "link";
+
+            // Add labels
+            series.nodes.template.label.text = "{name}";
+            series.nodes.template.label.valign = "bottom";
+            series.nodes.template.label.fill = am4core.color("#000");
+            series.nodes.template.label.dy = 10;
+            series.nodes.template.tooltipText = "{name}: [bold]{value}[/]";
+            series.nodes.template.label.hidden = true;
+            series.fontSize = 10;
+            series.minRadius = 30;
+            series.maxRadius = 30;
+
+            // Configure circles
+            series.nodes.template.circle.disabled = true;
+            series.nodes.template.outerCircle.disabled = true;
+
+            // Configure icons
+            var icon = series.nodes.template.createChild(am4core.Image);
+            icon.propertyFields.href = "image";
+            icon.horizontalCenter = "middle";
+            icon.verticalCenter = "middle";
+            icon.width = 60;
+            icon.height = 60;
+
+
+            series.centerStrength = 0.2;
+
+            series.nodes.template.events.on("up", function (event) {
+                var node = event.target;
+                node.outerCircle.disabled = !node.outerCircle.disabled;
+              });
+              
+              //NOT WORKING
+              series.links.template.interactionsEnabled = true;
+              series.links.template.clickable = true;
+              series.links.template.strokeWidth = 20;
+              series.links.template.events.on("hit", function (event) {                
+                var link = event.target;
+                console.log(link);
+                console.log(link.source.label.currentText);
+                console.log(link.target.label.currentText);
+              });
+              
+    
+            this.chart = chart;
+      }
+
+      componentDidMount() {
+        this.chartCode();
+      }
+
 
 
     render(){
@@ -94,6 +193,8 @@ class LongPara extends React.Component {
                 </label>
                 </form>
                 <div>{this.state.display}</div>
+
+                <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
             </div>
         );
     }
