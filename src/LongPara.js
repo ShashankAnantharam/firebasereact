@@ -71,7 +71,6 @@ class LongPara extends React.Component {
       }
 
       chartCode(){
-          console.log('here');
             // Create chart
             var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
 
@@ -135,6 +134,13 @@ class LongPara extends React.Component {
             icon.width = 60;
             icon.height = 60;
 
+            var mask = new am4core.Circle();
+            mask.fill = am4core.color('#000');
+            mask.radius = 30;
+            series.nodes.template.mask = mask;
+///            icon.mask = mask;
+//            icon.mask.disabled = false;
+           
 
             series.centerStrength = 0.2;
 
@@ -148,10 +154,7 @@ class LongPara extends React.Component {
               series.links.template.clickable = true;
               series.links.template.strokeWidth = 20;
               series.links.template.events.on("hit", function (event) {                
-                var link = event.target;
-                console.log(link);
-                console.log(link.source.label.currentText);
-                console.log(link.target.label.currentText);
+                var link = event.target;                
               });
               
     
