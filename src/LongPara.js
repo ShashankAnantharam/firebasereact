@@ -5,6 +5,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am4plugins_forceDirected from "@amcharts/amcharts4/plugins/forceDirected"; 
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import * as am4plugins_bullets from "@amcharts/amcharts4/plugins/bullets";
 
 am4core.useTheme(am4themes_animated);
 
@@ -127,19 +128,13 @@ class LongPara extends React.Component {
             series.nodes.template.outerCircle.disabled = true;
 
             // Configure icons
-            var icon = series.nodes.template.createChild(am4core.Image);
-            icon.propertyFields.href = "image";
-            icon.horizontalCenter = "middle";
-            icon.verticalCenter = "middle";
-            icon.width = 60;
-            icon.height = 60;
-
-            var mask = new am4core.Circle();
-            mask.fill = am4core.color('#000');
-            mask.radius = 30;
-            series.nodes.template.mask = mask;
-///            icon.mask = mask;
-//            icon.mask.disabled = false;
+            var icon = series.nodes.template.createChild(am4plugins_bullets.PinBullet);
+            icon.image = new am4core.Image();
+            icon.image.propertyFields.href = "image";
+            icon.circle.radius = am4core.percent(100);
+            icon.circle.strokeWidth = 0;
+            icon.background.pointerLength = 0;
+            icon.background.disabled = true;
            
 
             series.centerStrength = 0.2;
