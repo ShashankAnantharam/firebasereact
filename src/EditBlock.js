@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 import {Launcher} from 'react-chat-window';
 import { ChatFeed, ChatBubble, BubbleGroup, Message } from 'react-chat-ui';
+import * as Utils from './commonGraph/commonGraph';
 
 const styles = {
   button: {
@@ -176,6 +177,25 @@ class EditBlock extends React.Component {
             }]
           })
         }
+      }
+
+      componentDidMount(){
+        let testData = {
+          "US": 10,
+          "UK": 8,
+          "India": {
+            "AP": 4,
+            "TG": 3,
+            "Rest": 6 
+          }
+        }
+        let chartMap = {'US':0, 'India':0};
+        let possibleCharts = [];
+
+        Utils.traverseDataItem(testData, chartMap, possibleCharts);
+        console.log(testData);
+        console.log(chartMap);
+        console.log(possibleCharts);
       }
 
 
