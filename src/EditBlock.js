@@ -189,13 +189,46 @@ class EditBlock extends React.Component {
             "Rest": 6 
           }
         }
+
+        let testData2 = {
+          "US": 10,
+          "UK": 8,
+          "India": {
+            "AP": 4,
+            "TG": {
+              lg: {
+                kg: 0,
+                kg2: 2
+              },
+              lg2: {
+                kg: 10,
+                kg2: 5
+              },
+              lg4: {
+                kg: 1,
+                kg2: 3
+              }
+            },
+            "Rest": 6 
+          }
+        }
         let chartMap = {'US':0, 'India':0};
         let possibleCharts = [];
 
-        Utils.traverseDataItem(testData, chartMap, possibleCharts);
-        console.log(testData);
+        let dataIn =  testData2;
+
+        Utils.traverseDataItem(dataIn, chartMap, possibleCharts);
+        console.log(dataIn);
         console.log(chartMap);
         console.log(possibleCharts);
+
+        for(let i=0; i<possibleCharts.length; i++){
+          let existingTest =[];
+          let newChart = Utils.createChartForSingleDataItem(possibleCharts[i], dataIn, existingTest);
+          console.log(existingTest);
+        }
+        
+
       }
 
 

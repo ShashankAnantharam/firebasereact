@@ -44,7 +44,7 @@ export const traverseDataItemTree = (dataKey, dataItem, chartMap, possibleCharts
     for(let key in dataItem){
         if(key != '#v'){
             // #v is for the value
-            let result = traverseDataItemTree(key, dataItem[key], chartMap, possibleCharts);
+            let result = traverseDataItemTree(key, dataItem[key], chartMap, possibleCharts, dataItem);
             let val = result.val;
             hasChildBeenFoundInChartMap = hasChildBeenFoundInChartMap || result.foundChildren;
             if(val){
@@ -89,4 +89,48 @@ export const traverseDataItemTree = (dataKey, dataItem, chartMap, possibleCharts
 
 export const traverseDataItem = (dataItem, chartMap, possibleCharts) => {
     traverseDataItemTree(null, dataItem, chartMap, possibleCharts);
+}
+
+export const createChartForSingleDataItem = (possibleChart, dataItem, existingChartData, dataKey, category) => {
+    let reqKey = possibleChart.node;
+    let chartType = possibleChart.type;
+    let isSeries = false;
+    if(!isNullOrUndefined(category)){
+        isSeries = true;
+    }
+    
+    if(!isNullOrUndefined(dataKey) && dataKey == reqKey){
+        //dataItem reached
+        if(chartType == 1){
+            //simple line/bar chart
+            if(isSeries){
+                existingChartData.push({
+                    category: category,
+                    value: dataItem['#v']
+                })
+            }
+        }
+        else  if(chartType == 2){
+            if(isSeries){
+                //Stacked bar chart
+
+            }
+            else{
+                for(let key in dataItem){
+                    if(key!='#v'){
+                        existingChartData.push({
+                            category: key,
+                            value: dataItem[key]['#v']
+                        })
+                    }
+                }
+
+            }
+        }
+    }
+    else{
+        for(let key in dataItem){
+            createChartForSingleDataItem(possibleChart,dataItem[key],existingChartData,key,category);
+        }
+    }
 }
