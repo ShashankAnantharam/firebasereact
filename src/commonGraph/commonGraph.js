@@ -109,7 +109,7 @@ export const createChartForSingleDataItem = (possibleChart, dataItem, existingCh
                     value: dataItem['#v']
                 })
             }
-        }
+        } 
         else  if(chartType == 2){
             if(isSeries){
                 //Stacked bar chart

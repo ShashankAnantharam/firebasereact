@@ -212,7 +212,7 @@ class EditBlock extends React.Component {
             "Rest": 6 
           }
         }
-        let chartMap = {'US':0, 'India':0};
+        let chartMap = {'US':0, 'India':0, 'TG':0};
         let possibleCharts = [];
 
         let dataIn =  testData2;
