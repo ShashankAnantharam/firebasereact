@@ -3,6 +3,7 @@ import Textarea from 'react-textarea-autosize';
 import {Launcher} from 'react-chat-window';
 import { ChatFeed, ChatBubble, BubbleGroup, Message } from 'react-chat-ui';
 import * as Utils from './commonGraph/commonGraph';
+import { filter } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
 
 const styles = {
   button: {
@@ -217,18 +218,38 @@ class EditBlock extends React.Component {
 
         let dataIn =  testData2;
 
-        Utils.traverseDataItem(dataIn, chartMap, possibleCharts);
+        let filters = {
+          1: {},
+          2: {}
+        };
+
+
+        Utils.traverseDataItem(dataIn);
         console.log(dataIn);
-        console.log(chartMap);
-        console.log(possibleCharts);
-
-        for(let i=0; i<possibleCharts.length; i++){
-          let existingTest =[];
-          let newChart = Utils.createChartForSingleDataItem(possibleCharts[i], dataIn, existingTest);
-          console.log(existingTest);
-        }
         
+        Utils.getFilterOptions(dataIn['India'], filters);
+        console.log(filters);
 
+        let selectedFilters = [], filterOptions =  [];
+        Utils.traverseDataItemByFilters(dataIn, selectedFilters, filterOptions);
+        console.log(filterOptions);
+        console.log(selectedFilters);
+
+        Utils.traverseDataItemByFilters(dataIn, selectedFilters, filterOptions, 'US');
+        console.log(filterOptions);
+        console.log(selectedFilters);
+
+        Utils.traverseDataItemByFilters(dataIn, selectedFilters, filterOptions);
+        console.log(filterOptions);
+        console.log(selectedFilters);
+
+        Utils.traverseDataItemByFilters(dataIn, selectedFilters, filterOptions,'India');
+        console.log(filterOptions);
+        console.log(selectedFilters);
+
+        Utils.traverseDataItemByFilters(dataIn, selectedFilters, filterOptions,'TG');
+        console.log(filterOptions);
+        console.log(selectedFilters);
       }
 
 

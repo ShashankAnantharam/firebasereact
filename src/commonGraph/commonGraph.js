@@ -1,94 +1,114 @@
 import { isNullOrUndefined, isNumber, isString } from "util";
+import { filter } from "@amcharts/amcharts4/.internal/core/utils/Iterator";
 
-export const traverseDataItemTree = (dataKey, dataItem, chartMap, possibleCharts, parentDataItem) => {
+export const traverseDataItemTree = (dataKey, dataItem, level, parentDataItem) => {
     
     //returns total, updates chartMap
 
-    let isPresentInChartMap = false;
-    if(!isNullOrUndefined(dataKey) && (dataKey in chartMap)){
-        isPresentInChartMap = true;
-    }
+  
     if(isNumber(dataItem)){
         if(!isNullOrUndefined(dataKey) && !isNullOrUndefined(parentDataItem)){
             parentDataItem[dataKey] = {
-                '#v': dataItem
+                '#v': dataItem,
+                '#t': 1,
+                '#l':level
             };
         }      
         
-        if(isPresentInChartMap){
-            chartMap[dataKey] = 1;
-            possibleCharts.push(
-                {
-                    type: chartMap[dataKey],
-                    node: dataKey
-                }
-            )
-        }
-        
-        return {val: dataItem, foundChildren: isPresentInChartMap};
+        return {val: dataItem};
     }
     else if(isString(dataItem)){
         if(!isNullOrUndefined(dataKey) && !isNullOrUndefined(parentDataItem)){
             parentDataItem[dataKey] = {
                 '#v': 0,
-                '#orig': dataItem
+                '#orig': dataItem,
+                '#l':level
             };
         }
         
-        return {val: 0, foundChildren: false};
+        return {val: 0};
     }
 
     let total = 0;
     let count = 0;
-    let hasChildBeenFoundInChartMap = false;
     for(let key in dataItem){
-        if(key != '#v'){
+        if(key != '#v' && key != '#t' && key != '#l'){
             // #v is for the value
-            let result = traverseDataItemTree(key, dataItem[key], chartMap, possibleCharts, dataItem);
+            let result = traverseDataItemTree(key, dataItem[key], level+1, dataItem);
             let val = result.val;
-            hasChildBeenFoundInChartMap = hasChildBeenFoundInChartMap || result.foundChildren;
             if(val){
                 total += val;
             }
             count++;
         }        
-    }
-
+    } 
     
-    
-    if(isPresentInChartMap){
-        if(chartMap[dataKey] == 0){
+    if(!isNullOrUndefined(dataKey)){
+        if(!('#t' in dataItem)){
             //Simple
-            chartMap[dataKey] = 1;
-            possibleCharts.push(
-                {
-                    type: chartMap[dataKey],
-                    node: dataKey
-                }
-            )
+            dataItem['#t'] = 1;
         }
         
-        if(count>1 && Math.abs(chartMap[dataKey])==1){
+        if(count>1){
             //Pie, Simple
-            chartMap[dataKey] *= 2;
-            possibleCharts.push(
-                {
-                    type: Math.abs(chartMap[dataKey]),
-                    node: dataKey
-                }
-            )
-        }
-
-        
+            dataItem['#t'] = 2;
+        }        
     }
 
     dataItem['#v'] = total;
+    dataItem['#l'] = level;
     
-    return {val: total, foundChildren: isPresentInChartMap};
+    return {val: total};
 }
 
-export const traverseDataItem = (dataItem, chartMap, possibleCharts) => {
-    traverseDataItemTree(null, dataItem, chartMap, possibleCharts);
+export const traverseDataItem = (dataItem) => {
+    traverseDataItemTree(null, dataItem, 0);
+}
+
+export const getFilterOptions = (dataItem, filters) => {
+
+    if(isNullOrUndefined(dataItem)){
+        return;
+    }
+    
+    for(let key in dataItem){
+        if(key != '#v' && key != '#t' && key != '#l'){
+            // #v is for the value
+           filters[1][key] = true;
+           if(dataItem[key]['#t'] == 2){
+                filters[2][key] = true;
+           }
+        }        
+    } 
+}
+
+export const traverseDataItemByFilters = (dataItem, selectedFilters, filterOptions, newSelection) => {
+    // returns next options
+    let currOptions = {1: [], 2: []};
+    if(filterOptions.length == 0){
+        getFilterOptions(dataItem,currOptions);
+        filterOptions.push(currOptions);
+        return;
+    } 
+    if(isNullOrUndefined(newSelection)){
+        if(selectedFilters.length > 0)
+            selectedFilters.pop();
+        if(filterOptions.length > 0)
+            filterOptions.pop();        
+        return;
+    }
+    else{
+        selectedFilters.push(newSelection);
+        let currDataItem = dataItem;
+
+        for(let i=0; i<selectedFilters.length && !isNullOrUndefined(currDataItem); i++){
+            currDataItem = currDataItem[selectedFilters[i]];
+            if(isNullOrUndefined(currDataItem))
+                break;
+        }
+        getFilterOptions(currDataItem,currOptions);
+        filterOptions.push(currOptions);
+    }
 }
 
 export const createChartForSingleDataItem = (possibleChart, dataItem, existingChartData, dataKey, category) => {
